@@ -1,51 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 * {
-
-    font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
+.Navbar_Header {
+  text-transform: none;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
 nav {
-    height: 10vh;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 5vw;
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5vw;
 }
 
 .logo {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .logo p {
-    font-weight: bold;
-    font-size: 1.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .logo span {
-    color: rgb(130, 130, 130);
+  color: rgb(130, 130, 130);
 }
 
 .Navbar__navbar {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .Navbar__navbar ul {
-    padding: 0;
-    display: flex;
-    list-style: none;
+  padding: 0;
+  display: flex;
+  list-style: none;
 }
 
 .Navbar__li {
-    margin: 0 1rem;
-    text-decoration: none;
-    color: black;
+  margin: 0 1rem;
+  text-decoration: none;
+  color: black;
 }
 
 nav .Navbar__button {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: black;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
 }
