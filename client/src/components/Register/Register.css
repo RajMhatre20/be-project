@@ -1,9 +1,3 @@
-.Navbar_Header {
-  text-transform: none;
-  text-decoration: none;
-  color: #000;
-  cursor: pointer;
-}
 .register__header {
   margin: 0 5%;
   height: 10vh;
