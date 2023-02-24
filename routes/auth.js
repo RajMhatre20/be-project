@@ -6,7 +6,7 @@ const User = require("../models/user");
 
 //registration endpoint
 router.post("/register", (req, res, next) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   // Check if email already exists in the database
   User.findOne({ email })
     .then((user) => {
@@ -15,7 +15,7 @@ router.post("/register", (req, res, next) => {
       }
 
       // Create a new user with the provided email and password
-      const newUser = new User({ email, password });
+      const newUser = new User({ name, email, password });
 
       // Save the user to the database
       newUser
