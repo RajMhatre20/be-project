@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Register.css";
+import "./Login.css";
 import Image from "../../images/register.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -17,50 +15,41 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "http://localhost:5000/api/auth/login",
         {
-          name: name,
           email: email,
           password: password,
         }
       );
-      console.log(response);
+      console.log(response.data);
       if (response.data.success) {
-        // Redirect to login page on successful registration
-        setError(`${response.data.message}, redirecting to login page`);
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
+        localStorage.setItem("token", response.data.token);
+        // Redirect to home page on successful login
+        navigate("/dashboard");
       } else {
-        setError(response.data.error);
+        setError(response.data.message);
       }
     } catch (error) {
       setError(error.response.data.error);
     }
   };
+
   return (
     <>
-      <div className="register__header">
+      <div className="login__header">
         <div className="logo">
-          <Link to="/" className="Navbar_Header">
-            <p>
-              One <span>Cloud.</span>
-            </p>
-          </Link>
+          <p>
+            One <span>Cloud.</span>
+          </p>
         </div>
       </div>
-      <div className="register__content">
-        <div className="register__image">
+      <div className="login__content">
+        <div className="login__image">
           <img src={Image} alt="" />
         </div>
-        <div className="register__formpage">
+        <div className="login__formpage">
           {/* <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email">Email:</label>
@@ -93,29 +82,29 @@ const RegisterForm = () => {
             <button type="submit">Create an account</button>
           </form> */}
           <form onSubmit={handleSubmit} className="rounded bg-white shadow p-5">
-            <h3 className="text-dark fw-bolder fs-4 mb-2">Create a Account</h3>
+            <h3 className="text-dark fw-bolder fs-4 mb-2">
+              Login to your Account
+            </h3>
             <div className="fw-normal text-muted mb-3">
-              Already have a account? &nbsp;
+              Don't have an account? &nbsp;
               <Link
-                to="/login"
+                to="/register"
                 className="text-primary fw-bold text-decoration-none"
               >
-                Sign in
+                Register
               </Link>
             </div>
 
             <div className="text-center text-muted text-uppercase mb-3">or</div>
-            <div className="form-floating mb-3">
+            {/* <div className="form-floating mb-3">
               <input
                 type="text"
                 className="form-control"
                 id="floatingFirstName"
                 placeholder="name@example.com"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
               />
               <label htmlFor="floatingFirstName">Name</label>
-            </div>
+            </div> */}
             <div className="form-floating mb-3">
               <input
                 type="email"
@@ -145,19 +134,6 @@ const RegisterForm = () => {
               </span> */}
             </div>
 
-            <div className="form-floating mb-3">
-              <input
-                type="password"
-                className="form-control"
-                id="floatingConfirmPassword"
-                placeholder="Password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-              <label htmlFor="floatingConfirmPassword">Confirm Password</label>
-            </div>
-
             {/* <div className="col-12 d-flex align-items-center">
               <div className="form-check">
                 <input
@@ -174,14 +150,42 @@ const RegisterForm = () => {
               type="submit"
               className="btn btn-primary submit_btn w-100 my-4"
             >
-              Register
+              Login
             </button>
             {error && <p>{error}</p>}
           </form>
         </div>
       </div>
+      <div>
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          {error && <p>{error}</p>}
+          <button type="submit">Login</button>
+        </form>
+        <p>
+          Don't have an account? <Link to="/register">Register here.</Link>
+        </p>
+      </div>
     </>
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
