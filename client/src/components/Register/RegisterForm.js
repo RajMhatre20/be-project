@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -25,6 +26,7 @@ const RegisterForm = () => {
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
         {
+          name: name,
           email: email,
           password: password,
         }
@@ -43,7 +45,6 @@ const RegisterForm = () => {
       setError(error.response.data.error);
     }
   };
-
   return (
     <>
       <div className="register__header">
@@ -110,6 +111,8 @@ const RegisterForm = () => {
                 className="form-control"
                 id="floatingFirstName"
                 placeholder="name@example.com"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
               <label htmlFor="floatingFirstName">Name</label>
             </div>
