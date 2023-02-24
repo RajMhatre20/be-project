@@ -1,0 +1,42 @@
+.Home__content {
+    height: 90vh;
+    display: flex;
+    padding: 0 5%;
+}
+
+.Home__information {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Home__tagline {
+    font-weight: bold;
+    font-size: 5rem;
+}
+
+.Home__tagline2 {
+    margin: 2rem 0;
+}
+
+.Home__information .Home__button {
+    background-color: black;
+    color: white;
+    height: 7vh;
+    width: 9vw;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.Home__image {
+    display: flex;
+    align-items: center;
+}
+
+.Home__image img {
+    width: 50vw;
+}
