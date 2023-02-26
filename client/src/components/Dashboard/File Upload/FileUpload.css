@@ -58,15 +58,65 @@
 #file-upload .list-item {
   list-style: none;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 .file-card {
-  width: 200px;
-  height: 200px;
-  background-color: #fff;
-  border-radius: 12px;
+  margin-top: 10px;
+  width: fit-content;
+  height: 230px;
+  background-color: transparent;
+  overflow: hidden;
   transition: all 0.3s;
 }
-.file-card:hover {
-  box-shadow: 0 0 5px 2px rgb(88, 61, 161);
+.file-wrapper {
+  display: flex;
+}
+.file-card h3,
+h5 {
+  margin: auto;
+  width: 70%;
+  font-size: 14px;
+  word-wrap: break-word;
+  color: #fff;
+}
+.file-card h3 {
+  margin: auto;
+  position: absolute;
+  left: 40px;
+  bottom: 0;
+}
+.file-card h5 {
+  position: absolute;
+  font-size: 12px;
+  color: #fff;
+  top: 5px;
+  left: 40px;
+}
+.top-section {
+  height: 85%;
+  position: relative;
+}
+.bottom-section {
+  position: relative;
+  bottom: 0;
+  height: 15%;
+  /* background-color: rgb(88, 61, 161); */
+  display: flex;
+}
+.file-card button {
+  background-color: transparent;
+  border: 0;
+}
+.top-section button {
+  position: absolute;
+  margin-top: 20px;
+  margin-left: 144px;
+  color: #fff;
+}
+.bottom-section button {
+  position: absolute;
+  top: -10px;
+  margin-left: 144px;
+  color: #fff;
 }

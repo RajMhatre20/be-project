@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaDownload, FaTrash, FaFile } from "react-icons/fa";
 import "./FileUpload.css";
 
 function FileUpload() {
@@ -133,6 +133,15 @@ function FileUpload() {
     handleFileUpload();
   }, [fileUploaded]);
 
+  function humanFileSize(size) {
+    var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+    return (
+      (size / Math.pow(1024, i)).toFixed(2) * 1 +
+      " " +
+      ["B", "kB", "MB", "GB", "TB"][i]
+    );
+  }
+
   return (
     <>
       <div id="file-upload">
@@ -158,21 +167,24 @@ function FileUpload() {
           </form>
         </div>
 
-        <h2>Upload File</h2>
+        <h2></h2>
 
-        <h2>Files</h2>
-        <ul>
+        <ul className="file-wrapper">
           {files.map((file) => (
-            <div className="file-card">
-              <li key={file._id} className="list-item">
-                {file.fileName}
+            <div className="file-card" key={file._id}>
+              <div className="top-section">
                 <button onClick={() => handleFileDownload(file._id)}>
-                  Download
+                  <FaDownload size={30} />
                 </button>
+                <FaFile size={230} className="file-bg" />
+                <h3>{file.fileName}</h3>
+              </div>
+              <div className="bottom-section">
+                <h5>{humanFileSize(file.fileSize)}</h5>
                 <button onClick={() => handleFileDelete(file._id)}>
-                  Delete
+                  <FaTrash size={30} />
                 </button>
-              </li>
+              </div>
             </div>
           ))}
         </ul>
