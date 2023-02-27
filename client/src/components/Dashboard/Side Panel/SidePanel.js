@@ -47,12 +47,12 @@ function SidePanel() {
   const sidePanelList2 = [
     {
       title: "Help & Support",
-      href: "javascript:;",
+      href: "#",
       icon: <FaFolder />,
     },
     {
       title: "Log out",
-      href: "javascript:;",
+      href: "#",
       icon: <FaFolderPlus />,
     },
   ];
@@ -77,11 +77,9 @@ function SidePanel() {
       <ul className="tabs">
         {sidePanelList.map((e) => {
           return (
-            <a href="#" className="list-item">
+            <a href="#" className="list-item" key={e.title}>
               <div className="list-icon">{e.icon}</div>
-              <li className="list-text" key={e.title}>
-                {e.title}
-              </li>
+              <li className="list-text">{e.title}</li>
             </a>
           );
         })}
@@ -92,12 +90,11 @@ function SidePanel() {
             <a
               href={e.href}
               className="list-item"
-              onClick={e.title === "Log out" && logout}
+              onClick={e.title === "Log out" ? logout : () => {}}
+              key={e.title}
             >
               <div className="list-icon">{e.icon}</div>
-              <li className="list-text" key={e.title}>
-                {e.title}
-              </li>
+              <li className="list-text">{e.title}</li>
             </a>
           );
         })}

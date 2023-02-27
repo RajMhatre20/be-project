@@ -12,7 +12,7 @@ const token = localStorage.getItem("token");
 function Dashboard() {
   // Render file upload form and file list
   return (
-    <div div id="dashboard">
+    <div id="dashboard">
       <SidePanel />
       <FileUpload />
     </div>

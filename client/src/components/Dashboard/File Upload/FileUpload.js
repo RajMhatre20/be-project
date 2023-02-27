@@ -156,10 +156,10 @@ function FileUpload() {
                 onChange={handleFileSelect}
               />
 
-              <label for="file" className="label1">
+              <label htmlFor="file" className="label1">
                 <FaPlus />
               </label>
-              <label for="file" className="label2">
+              <label htmlFor="file" className="label2">
                 Add a file
               </label>
             </div>
