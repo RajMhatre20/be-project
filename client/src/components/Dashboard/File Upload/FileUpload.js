@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import { FaPlus, FaDownload, FaTrash, FaFile } from "react-icons/fa";
 import "./FileUpload.css";
 
 function FileUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileUploaded, setFileUploaded] = useState(false);
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
@@ -28,10 +26,7 @@ function FileUpload() {
 
   // Function to handle file selection
   function handleFileSelect(event) {
-    console.log(fileUploaded);
     setSelectedFile(event.target.files[0]);
-    setFileUploaded(!fileUploaded);
-    console.log(fileUploaded);
   }
 
   //md5 algorithm to hash the file
@@ -122,16 +117,11 @@ function FileUpload() {
     }
   }
 
-  //logout
-  const navigate = useNavigate();
-  function logout() {
-    localStorage.removeItem("token");
-    navigate("/login");
-  }
-
   useEffect(() => {
-    handleFileUpload();
-  }, [fileUploaded]);
+    if (selectedFile) {
+      handleFileUpload();
+    }
+  }, [selectedFile]);
 
   function humanFileSize(size) {
     var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
