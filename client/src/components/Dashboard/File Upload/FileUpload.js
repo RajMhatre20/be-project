@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
 import { FaPlus, FaDownload, FaTrash, FaFile } from "react-icons/fa";
-import { AES } from "crypto-js";
-
 import "./FileUpload.css";
 
 function FileUpload() {
@@ -28,7 +26,10 @@ function FileUpload() {
 
   // Function to handle file selection
   function handleFileSelect(event) {
-    setSelectedFile(event.target.files[0]);
+    if (event.target.files[0]) {
+      setSelectedFile(event.target.files[0]);
+      document.getElementById("file").value = "";
+    }
   }
 
   //md5 algorithm to hash the file
@@ -46,25 +47,11 @@ function FileUpload() {
   };
 
   // Function to handle file upload
-  async function handleFileUpload(event) {
-    // event.preventDefault();
-
+  async function handleFileUpload() {
     const hashValue = await calculateMD5(selectedFile);
     const formData = new FormData();
-
     formData.append("file", selectedFile);
     formData.append("hashValue", hashValue);
-
-    // const file = selectedFile; // read file contents
-    // const fileBytes = new Uint8Array(file);
-    // console.log(fileBytes);
-    // const encryptedData = AES.encrypt(fileBytes, "secret key").toString();
-    // console.log(encryptedData);
-    // const decryptedData = AES.decrypt(encryptedData, "secret key").toString(
-    //   CryptoJS.enc.Utf8
-    // );
-    // console.log("decrypted", decryptedData);
-
     const response = await fetch("http://localhost:5000/api/files/upload", {
       method: "POST",
       headers: {
@@ -72,10 +59,8 @@ function FileUpload() {
       },
       body: formData,
     });
-    console.log(response);
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       setFiles((prevFiles) => [...prevFiles, data.data]);
     } else {
       console.error("Failed to upload file");
@@ -128,11 +113,11 @@ function FileUpload() {
       console.error("Failed to delete file");
     }
   }
-
   useEffect(() => {
     if (selectedFile) {
       handleFileUpload();
     }
+    setSelectedFile(null);
   }, [selectedFile]);
 
   function humanFileSize(size) {
@@ -143,7 +128,6 @@ function FileUpload() {
       ["B", "kB", "MB", "GB", "TB"][i]
     );
   }
-
   return (
     <>
       <div id="file-upload">
