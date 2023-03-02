@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
 import { FaPlus, FaDownload, FaTrash, FaFile } from "react-icons/fa";
+import { AES } from "crypto-js";
+
 import "./FileUpload.css";
 
 function FileUpload() {
@@ -52,6 +54,16 @@ function FileUpload() {
 
     formData.append("file", selectedFile);
     formData.append("hashValue", hashValue);
+
+    // const file = selectedFile; // read file contents
+    // const fileBytes = new Uint8Array(file);
+    // console.log(fileBytes);
+    // const encryptedData = AES.encrypt(fileBytes, "secret key").toString();
+    // console.log(encryptedData);
+    // const decryptedData = AES.decrypt(encryptedData, "secret key").toString(
+    //   CryptoJS.enc.Utf8
+    // );
+    // console.log("decrypted", decryptedData);
 
     const response = await fetch("http://localhost:5000/api/files/upload", {
       method: "POST",

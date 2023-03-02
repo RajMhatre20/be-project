@@ -1,6 +1,42 @@
 const path = require("path");
 const File = require("../models/file");
 const fs = require("fs");
+const { createCipheriv } = require("crypto");
+const crypto = require("crypto");
+
+// Define the encryption & decryption parameters
+const algorithm = "aes-256-cbc";
+const key = process.env.ED_KEY;
+const iv = Buffer.alloc(16, 0); // Initialization
+// encryptFile
+const encryptFile = (filename) => {
+  //encryption
+  // Read the file contents
+  const fileData = fs.readFileSync("uploads/" + filename);
+
+  // Create the cipher and encrypt the data
+  const cipher = createCipheriv(algorithm, key, iv);
+  const encryptedData = Buffer.concat([
+    cipher.update(fileData),
+    cipher.final(),
+  ]);
+
+  // Write the encrypted data to a new file
+  const encryptedFilePath = "uploads/" + filename + ".enc";
+  fs.writeFileSync(encryptedFilePath, encryptedData);
+};
+
+const decryptFile = (file) => {
+  // Read the encrypted file contents
+  const encryptedFilePath = "uploads/" + file.filePath + ".enc";
+  const encryptedData = fs.readFileSync(encryptedFilePath);
+
+  // Create the decipher object
+  const decipher = crypto.createDecipheriv(algorithm, key, iv);
+
+  // Decrypt the data
+  return Buffer.concat([decipher.update(encryptedData), decipher.final()]);
+};
 
 // @desc      Upload a file
 // @route     POST /api/files/upload
@@ -18,6 +54,14 @@ exports.uploadFile = async (req, res) => {
       hashValue: hashValue,
     });
     await file.save();
+    //encrypt the original file
+    encryptFile(filename);
+    // Delete the original file from disk
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
     res.status(201).json({ success: true, data: file });
   } catch (err) {
     console.error(err.message);
@@ -47,9 +91,9 @@ exports.downloadFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ success: false, error: "File not found" });
     }
-    const filePath = path.join(__dirname, "../uploads", file.filePath);
-    res.json(file);
-    res.download(filePath);
+
+    const decryptedData = decryptFile(file);
+    res.send(decryptedData);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ success: false, error: "Server error" });
@@ -84,7 +128,7 @@ exports.deleteFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ success: false, error: "File not found" });
     }
-    const filePath = path.join(__dirname, "../uploads", file.filePath);
+    const filePath = path.join(__dirname, "../uploads", file.filePath + ".enc");
     fs.unlink(filePath, (err) => {
       if (err) {
         throw err;
