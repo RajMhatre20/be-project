@@ -17,19 +17,21 @@ const fileSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  uploadedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  uploadedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
   },
   hashValue: {
     type: String,
-    required:true
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("File", fileSchema);

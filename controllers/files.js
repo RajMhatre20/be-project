@@ -53,15 +53,33 @@ exports.uploadFile = async (req, res) => {
       uploadedBy: req.user._id,
       hashValue: hashValue,
     });
-    await file.save();
-    //encrypt the original file
-    encryptFile(filename);
-    // Delete the original file from disk
-    fs.unlink(req.file.path, (err) => {
+    File.find({ hashValue: hashValue }, (err, data) => {
       if (err) {
-        console.error(err);
+        console.log(err);
+      } else {
+        if (data.length) {
+          File.updateOne(
+            { _id: data[0]._id },
+            { $push: { uploadedBy: req.user._id } },
+            function (err) {
+              if (err) console.log(err);
+              else console.log("Value added successfully");
+            }
+          );
+        } else {
+          file.save();
+          //encrypt the original file
+          encryptFile(filename);
+        }
       }
+      // Delete the original file from disk
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
     });
+
     res.status(201).json({ success: true, data: file });
   } catch (err) {
     console.error(err.message);
@@ -128,13 +146,21 @@ exports.deleteFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ success: false, error: "File not found" });
     }
-    const filePath = path.join(__dirname, "../uploads", file.filePath + ".enc");
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        throw err;
-      }
-    });
-    await file.remove();
+    file.uploadedBy.pull(req.user._id);
+    await file.save();
+    if (file.uploadedBy.length <= 1) {
+      const filePath = path.join(
+        __dirname,
+        "../uploads",
+        file.filePath + ".enc"
+      );
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+      await file.remove();
+    }
     res
       .status(200)
       .json({ success: true, message: "File deleted successfully" });
