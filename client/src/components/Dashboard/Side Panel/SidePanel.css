@@ -1,24 +1,30 @@
-#side-panel {
+.side-panel {
   width: 20%;
   min-height: 100vh;
   height: max-content;
   background-color: rgb(18, 19, 26);
   color: #fff;
+  position: relative;
 }
-#side-panel .sidepanel__header {
+.side-panel .sidepanel__header {
   margin-top: 14px;
   margin-left: 5vw;
 }
-#side-panel .tabs {
+.side-panel .sidepanel__tabs {
   margin: 50px auto;
 }
-#side-panel .list-icon {
+.side-panel .sidepanel__tabs_end{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.side-panel .list-icon {
   margin-left: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#side-panel .list-item {
+.side-panel .list-item {
   margin: 10px auto;
   padding: 16px 10px;
   width: 80%;
@@ -27,25 +33,25 @@
   align-items: center;
   text-decoration: none;
 }
-#side-panel .list-item:hover {
+.side-panel .list-item:hover {
   cursor: pointer;
   background-color: rgba(88, 61, 161, 0.5);
 }
-#side-panel .list-item:focus {
+.side-panel .list-item:focus {
   background-color: rgb(88, 61, 161);
 }
-#side-panel .list-item:active {
+.side-panel .list-item:active {
   background-color: rgb(88, 61, 161);
 }
-#side-panel .list-text {
+.side-panel .list-text {
   margin-left: 20px;
   text-decoration: none;
   color: #ddd;
 }
-#side-panel ul {
+.side-panel ul {
   margin: 0;
   padding: 0;
 }
-#side-panel li {
+.side-panel li {
   list-style: none;
 }

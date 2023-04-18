@@ -66,10 +66,12 @@ exports.uploadFile = async (req, res) => {
               else console.log("Value added successfully");
             }
           );
+          res.status(201).json({ success: true, data: file, exists:true });
         } else {
           file.save();
           //encrypt the original file
           encryptFile(filename);
+          res.status(201).json({ success: true, data: file });
         }
       }
       // Delete the original file from disk
@@ -79,8 +81,6 @@ exports.uploadFile = async (req, res) => {
         }
       });
     });
-
-    res.status(201).json({ success: true, data: file });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ success: false, error: "Server error" });

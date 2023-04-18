@@ -69,19 +69,25 @@
   overflow: hidden;
   transition: all 0.3s;
 }
+
+
 .file-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-row-gap: 2vw;
 }
+
 .file-card h3,
 h5 {
-  margin: auto;
+  margin: 0 auto;
   width: 70%;
   font-size: 14px;
   word-wrap: break-word;
   color: #fff;
 }
 .file-card h3 {
-  margin: auto;
+  margin: 18px auto;
+  padding-right: 18px;
   position: absolute;
   left: 40px;
   bottom: 0;
@@ -119,4 +125,13 @@ h5 {
   top: -10px;
   margin-left: 144px;
   color: #fff;
+}
+
+.popup{
+  position: absolute;
+  bottom: 2vh;
+  right: 1vw;
+  background-color: rgb(18, 19, 26);
+  color: white;
+  padding: 1rem 1rem;
 }

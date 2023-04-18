@@ -61,10 +61,33 @@ function FileUpload() {
     });
     if (response.ok) {
       const data = await response.json();
-      setFiles((prevFiles) => [...prevFiles, data.data]);
-    } else {
+      if(data.exists && files.find(o=>o.hashValue===hashValue)){
+        console.log("File already exists");
+        SetFileExists(true);
+      }
+      else{
+        setFiles((prevFiles) => [...prevFiles, data.data]);
+      }
+    }  else {
       console.error("Failed to upload file");
     }
+  }
+
+  //Pop up Function
+  const [fileExists,SetFileExists]=useState(false);
+  const ShowPopup=()=>{
+    useEffect(()=>{
+      setTimeout(function() {
+        SetFileExists(false)
+           }, 3000);
+         },
+     [])
+        
+    return(
+      <>
+         {fileExists?<div className="popup">File Already Exist</div>:<></>} 
+      </>
+    )
   }
 
   // Function to handle file download
@@ -165,6 +188,8 @@ function FileUpload() {
                 <FaFile size={230} className="file-bg" />
                 <h3>{file.fileName}</h3>
               </div>
+              
+              
               <div className="bottom-section">
                 <h5>{humanFileSize(file.fileSize)}</h5>
                 <button onClick={() => handleFileDelete(file._id)}>
@@ -175,6 +200,7 @@ function FileUpload() {
           ))}
         </ul>
       </div>
+      <ShowPopup/>
     </>
   );
 }

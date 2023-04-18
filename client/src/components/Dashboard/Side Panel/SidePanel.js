@@ -7,6 +7,7 @@ import {
   FaFolderPlus,
   FaStar,
   FaTrash,
+  
 } from "react-icons/fa";
 import "./SidePanel.css";
 
@@ -17,39 +18,39 @@ function SidePanel() {
       href: "/my-cloud",
       icon: <FaFolder />,
     },
-    {
-      title: "Shared",
-      href: "/shared",
-      icon: <FaFolderPlus />,
-    },
-    {
-      title: "All Files",
-      href: "/all-files",
-      icon: <FaFile />,
-    },
+    // {
+    //   title: "Shared",
+    //   href: "/shared",
+    //   icon: <FaFolderPlus />,
+    // },
+    // {
+    //   title: "All Files",
+    //   href: "/all-files",
+    //   icon: <FaFile />,
+    // },
     {
       title: "Favourites",
       href: "/favourites",
       icon: <FaStar />,
     },
-    {
-      title: "Private Files",
-      href: "/private-files",
-      icon: <FaFolderMinus />,
-    },
-    {
-      title: "Deleted Files",
-      href: "/deleted-files",
-      icon: <FaTrash />,
-    },
+    // {
+    //   title: "Private Files",
+    //   href: "/private-files",
+    //   icon: <FaFolderMinus />,
+    // },
+    // {
+    //   title: "Deleted Files",
+    //   href: "/deleted-files",
+    //   icon: <FaTrash />,
+    // },
   ];
 
   const sidePanelList2 = [
-    {
-      title: "Help & Support",
-      href: "#",
-      icon: <FaFolder />,
-    },
+    // {
+    //   title: "Help & Support",
+    //   href: "#",
+    //   icon: <FaFolder />,
+    // },
     {
       title: "Log out",
       href: "#",
@@ -64,7 +65,7 @@ function SidePanel() {
     navigate("/login");
   }
   return (
-    <div id="side-panel">
+    <div className="side-panel">
       <div className="sidepanel__header">
         <div className="logo">
           <Link to="/" className="Navbar_Header">
@@ -74,7 +75,7 @@ function SidePanel() {
           </Link>
         </div>
       </div>
-      <ul className="tabs">
+      <ul className="sidepanel__tabs">
         {sidePanelList.map((e) => {
           return (
             <a href="#" className="list-item" key={e.title}>
@@ -84,7 +85,7 @@ function SidePanel() {
           );
         })}
       </ul>
-      <ul className="tabs">
+      <ul className="sidepanel__tabs sidepanel__tabs_end">
         {sidePanelList2.map((e) => {
           return (
             <a
