@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
 import { FaPlus, FaDownload, FaTrash, FaFile } from "react-icons/fa";
 import "./FileUpload.css";
+import JSZip from 'jszip';
+
+
 
 function FileUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -46,11 +49,28 @@ function FileUpload() {
     });
   };
 
+  //Function to compress file
+  const compressFile = async (file) => {
+    const zip = new JSZip();
+    zip.file(file.name, file);
+    const options = {
+      type: 'blob',
+      compression: 'DEFLATE',
+      compressionOptions: {
+        level: 5,
+      },
+    };
+    const compressedBlob = await zip.generateAsync(options);
+    const compressedFile = new File([compressedBlob], `${file.name}.zip`, { type: 'application/zip' });
+    return compressedFile;
+  };
+
   // Function to handle file upload
   async function handleFileUpload() {
+    const t= await compressFile(selectedFile);
     const hashValue = await calculateMD5(selectedFile);
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", t);
     formData.append("hashValue", hashValue);
     const response = await fetch("http://localhost:5000/api/files/upload", {
       method: "POST",
@@ -90,6 +110,22 @@ function FileUpload() {
     )
   }
 
+
+const decompressBlob = async (blob) => {
+  const zip = new JSZip();
+  const zipFile = await zip.loadAsync(blob);
+  const files = Object.values(zipFile.files);
+  const extractedFiles = [];
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const fileData = await file.async('blob');
+    extractedFiles.push(new File([fileData], file.name, { type: file.comment }));
+  }
+
+  return extractedFiles;
+};
+
   // Function to handle file download
   async function handleFileDownload(fileId) {
     const response = await fetch(
@@ -100,19 +136,13 @@ function FileUpload() {
         },
       }
     );
-    const rsp = await fetch(`http://localhost:5000/api/files/${fileId}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    const data = await rsp.json();
-    console.log(data);
-    if (response.ok && rsp.ok) {
+    if (response.ok) {
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const file=await decompressBlob(blob);
+      const url = window.URL.createObjectURL(file[0]);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${data.data.fileName}`;
+      a.download = `${file[0].name}`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -144,7 +174,7 @@ function FileUpload() {
   }, [selectedFile]);
 
   function humanFileSize(size) {
-    var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+    var i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
     return (
       (size / Math.pow(1024, i)).toFixed(2) * 1 +
       " " +
@@ -176,8 +206,6 @@ function FileUpload() {
           </form>
         </div>
 
-        <h2></h2>
-
         <ul className="file-wrapper">
           {files.map((file) => (
             <div className="file-card" key={file._id}>
@@ -186,7 +214,7 @@ function FileUpload() {
                   <FaDownload size={30} />
                 </button>
                 <FaFile size={230} className="file-bg" />
-                <h3>{file.fileName}</h3>
+                <h3>{file.fileName.slice(0,-4)}</h3>
               </div>
               
               

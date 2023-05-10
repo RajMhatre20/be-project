@@ -31,7 +31,6 @@ const RegisterForm = () => {
           password: password,
         }
       );
-      console.log(response);
       if (response.data.success) {
         // Redirect to login page on successful registration
         setError(`${response.data.message}, redirecting to login page`);

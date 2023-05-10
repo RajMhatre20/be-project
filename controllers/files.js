@@ -148,7 +148,7 @@ exports.deleteFile = async (req, res) => {
     }
     file.uploadedBy.pull(req.user._id);
     await file.save();
-    if (file.uploadedBy.length <= 1) {
+    if (file.uploadedBy.length < 1) {
       const filePath = path.join(
         __dirname,
         "../uploads",
