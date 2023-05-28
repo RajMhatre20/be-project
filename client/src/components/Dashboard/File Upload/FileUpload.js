@@ -14,7 +14,7 @@ function FileUpload() {
     // Fetch all files that belong to the user and store them in the state
     const fetchFiles = async () => {
       const response = await fetch(
-        "http://localhost:5000/api/files/getmyfiles",
+        `${process.env.REACT_APP_BASE_URL}/api/files/getmyfiles`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -72,7 +72,7 @@ function FileUpload() {
     const formData = new FormData();
     formData.append("file", t);
     formData.append("hashValue", hashValue);
-    const response = await fetch("http://localhost:5000/api/files/upload", {
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/files/upload`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -129,7 +129,7 @@ const decompressBlob = async (blob) => {
   // Function to handle file download
   async function handleFileDownload(fileId) {
     const response = await fetch(
-      `http://localhost:5000/api/files/${fileId}/download`,
+      `${process.env.REACT_APP_BASE_URL}/api/files/${fileId}/download`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -153,7 +153,7 @@ const decompressBlob = async (blob) => {
 
   // Function to handle file deletion
   async function handleFileDelete(fileId) {
-    const response = await fetch(`http://localhost:5000/api/files/${fileId}`, {
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/files/${fileId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
